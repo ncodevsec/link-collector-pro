@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Collector Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body class="bg-gray-50 p-5 transition-colors duration-300">
+    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+        <h1 class="text-2xl font-black text-gray-900 dark:text-gray-100">Link Collector <span
+                class="text-blue-500 text-lg">PRO</span></h1>
+
+        <div class="flex items-center space-x-3">
+            <select id="themeSelect" class="text-sm border rounded px-2 py-1 bg-white dark:bg-gray-700">
+                <option value="system">System</option>
+                <option value="light">Day</option>
+                <option value="dark">Night</option>
+            </select>
+            <button id="copyBtn"
+                class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-3 rounded shadow">Copy
+                Links</button>
+            <button id="openTabBtn"
+                class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded shadow">Full
+                View</button>
+        </div>
+    </div>
+
+    <div id="tabBar"
+        class="flex space-x-6 border-b mb-6 text-sm font-medium text-gray-500 cursor-pointer overflow-x-auto whitespace-nowrap pb-1">
+        <div data-type="All" class="pb-2 tab-active">All Links</div>
+        <div data-type="Paths" class="pb-2">Paths</div>
+        <div data-type="JS Links" class="pb-2">JS Files</div>
+        <div data-type="JSON Files" class="pb-2">JSON</div>
+        <div data-type="Images" class="pb-2">Images</div>
+        <div data-type="Files" class="pb-2">Others</div>
+    </div>
+
+    <div class="mb-4">
+        <input type="text" id="searchInput" placeholder="Search links..."
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <div id="results" class="space-y-8">
+        <div class="flex justify-center py-10">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+    </div>
+
+    <div class="px-5 py-3 border-t border-gray-200 dark:border-gray-700 mt-6 text-center">
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+            Made by <a href="https://github.com/ncodevsec" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline font-semibold">ncodevsec</a> | 
+            <a href="https://github.com/ncodevsec/link-collector-pro" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline">GitHub</a>
+        </p>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

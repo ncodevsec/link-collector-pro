@@ -1,0 +1,24 @@
+{
+	"manifest_version": 3,
+	"name": "Link Collector Pro",
+	"version": "1.0.0",
+	"description": "Efficiently collect, categorize, and search all links on any webpage. Extract paths, files, images, and resources with powerful filtering capabilities.",
+	"permissions": ["activeTab", "scripting", "storage"],
+	"host_permissions": ["<all_urls>"],
+	"icons": {
+		"16": "img/links16.png",
+		"48": "img/links48.png",
+		"128": "img/links128.png"
+	},
+	"action": {
+		"default_popup": "popup.html",
+		"default_title": "Link Collector Pro - Extract all links from any webpage",
+		"default_icon": {
+			"16": "img/links16.png",
+			"48": "img/links48.png",
+			"128": "img/links128.png"
+		}
+	},
+	"author": "ncodevsec",
+	"homepage_url": "https://github.com/ncodevsec"
+}
