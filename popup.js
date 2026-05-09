@@ -8,8 +8,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const isFullTab = urlParams.has("fullTab");
 
 	if (isFullTab) {
+		// ফুল ট্যাব মোডে থাকলে বডি ক্লাস এবং বাটন হাইড করা
 		document.body.classList.add("full-tab");
-		document.getElementById("openTabBtn").classList.add("hidden");
+		const openTabBtn = document.getElementById("openTabBtn");
+		if (openTabBtn) {
+			openTabBtn.style.display = "none"; // বাটনটি পুরোপুরি সরিয়ে ফেলবে
+		}
+
 		chrome.storage.local.get(["savedLinks"], (data) => {
 			if (data.savedLinks) {
 				allLinksGlobal = data.savedLinks;
@@ -17,13 +22,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 			}
 		});
 	} else {
+		// পপআপ মোডে থাকলে স্ক্র্যাপার রান করবে
 		const [tab] = await chrome.tabs.query({
 			active: true,
 			currentWindow: true,
 		});
-		if (tab.url.startsWith("chrome"))
+
+		if (tab.url.startsWith("chrome")) {
 			return (document.getElementById("results").innerHTML =
 				'<p class="text-red-500 text-center">Unavailable on this page.</p>');
+		}
 
 		chrome.scripting.executeScript(
 			{
@@ -96,8 +104,7 @@ function collectAllLinksInPage() {
 							urlObj.pathname + urlObj.search + urlObj.hash ||
 							"/",
 					});
-				} catch (e) {
-				}
+				} catch (e) {}
 			}
 		}
 	});
@@ -127,9 +134,10 @@ async function renderLinks() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const isFullTab = urlParams.has("fullTab");
 
-	let fullCurrentDomain = ""; 
-	let mainBaseDomain = ""; 
+	let fullCurrentDomain = "";
+	let mainBaseDomain = "";
 
+	// বর্তমান ট্যাব বা প্যারামিটার থেকে ডোমেইন আইডেন্টিফাই করা
 	if (isFullTab) {
 		const domainParam = urlParams.get("domain");
 		if (domainParam) {
@@ -148,12 +156,22 @@ async function renderLinks() {
 		} catch (e) {}
 	}
 
+	// ১. ট্যাবগুলোর লিঙ্ক কোয়ান্টিটি (Quantity) আপডেট করা
+	const tabs = document.querySelectorAll("#tabBar .tab-item");
+	tabs.forEach((tab) => {
+		const type = tab.dataset.type;
+		const count = allLinksGlobal.filter(
+			(l) => type === "All" || l.category === type,
+		).length;
+		tab.innerHTML = `${type} <span class="tab-count">${count}</span>`;
+	});
+
+	// ২. লিঙ্ক ফিল্টারিং (Category + Search)
 	const filteredLinks = allLinksGlobal
 		.filter(
 			(l) => currentCategory === "All" || l.category === currentCategory,
 		)
 		.filter((l) => {
-			// Apply search filter
 			if (!currentSearchQuery) return true;
 			const url = l.fullUrl.toLowerCase();
 			const domain = l.domain.toLowerCase();
@@ -165,11 +183,13 @@ async function renderLinks() {
 			);
 		});
 
+	// ৩. ডোমেইন অনুযায়ী গ্রুপিং
 	const grouped = filteredLinks.reduce((acc, link) => {
 		(acc[link.domain] = acc[link.domain] || []).push(link);
 		return acc;
 	}, {});
 
+	// ৪. ডোমেইন সর্টিং (Current Domain First)
 	const sortedDomains = Object.keys(grouped).sort((a, b) => {
 		if (a === fullCurrentDomain && b !== fullCurrentDomain) return -1;
 		if (b === fullCurrentDomain && a !== fullCurrentDomain) return 1;
@@ -182,38 +202,37 @@ async function renderLinks() {
 		if (aIsRelated && !bIsRelated) return -1;
 		if (!aIsRelated && bIsRelated) return 1;
 
-		if (aIsRelated && bIsRelated) {
-			return a.localeCompare(b);
-		}
-
 		const aRev = a.split(".").reverse().join(".");
 		const bRev = b.split(".").reverse().join(".");
 		return aRev.localeCompare(bRev);
 	});
 
+	// ৫. ডোমেইন কার্ড রেন্ডারিং
 	for (const domain of sortedDomains) {
 		const section = document.createElement("div");
-		section.className =
-			"bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-4 transition-colors duration-300";
+		section.className = "cyber-card";
 
+		const domainLinks = grouped[domain];
 		const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-
-		const sortedLinks = grouped[domain].sort((a, b) =>
+		const sortedLinks = domainLinks.sort((a, b) =>
 			a.path.localeCompare(b.path),
 		);
 
 		section.innerHTML = `
-      <div class="flex items-center mb-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg transition-colors">
-        <img src="${faviconUrl}" class="w-5 h-5 mr-3 rounded bg-white" onerror="this.src='images/links16.ico'">
-        <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">${domain}</h2>
+      <div class="domain-header-box">
+        <div class="flex items-center">
+            <img src="${faviconUrl}" class="w-5 h-5 mr-3 rounded bg-white" onerror="this.src='images/links16.ico'">
+            <h2 class="text-sm font-bold truncate" style="max-width: 250px;">${domain}</h2>
+        </div>
+        <span class="badge-count">${domainLinks.length} Links</span>
       </div>
       <ul class="space-y-2 ml-2">
         ${sortedLinks
 			.map(
 				(link) => `
           <li class="flex items-center text-sm">
-            <span class="text-blue-500 mr-2">•</span>
-            <a href="${link.fullUrl}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline link-text" title="${link.fullUrl}">${link.path}</a>
+            <span class="bullet-point mr-2">•</span>
+            <a href="${link.fullUrl}" target="_blank" class="cyber-link" title="${link.fullUrl}">${link.path}</a>
           </li>
         `,
 			)
@@ -223,10 +242,11 @@ async function renderLinks() {
 		resultsDiv.appendChild(section);
 	}
 
-	// Show no results message if needed
+	// ৬. 'No Results' হ্যান্ডলিং
 	if (filteredLinks.length === 0) {
 		const noResults = document.createElement("div");
-		noResults.className = "flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400";
+		noResults.className =
+			"flex flex-col items-center justify-center py-12 text-gray-500";
 		noResults.innerHTML = `
       <div class="text-4xl mb-3">🔍</div>
       <p class="font-semibold">No links found</p>
@@ -235,7 +255,7 @@ async function renderLinks() {
 		resultsDiv.appendChild(noResults);
 	}
 
-	// Update search results counter
+	// ৭. সার্চ রেজাল্ট কাউন্টার (সার্চ ইনপুটের নিচে)
 	const searchResultsEl = document.getElementById("searchResults");
 	if (currentSearchQuery && filteredLinks.length > 0) {
 		searchResultsEl.textContent = `Found ${filteredLinks.length} link${filteredLinks.length !== 1 ? "s" : ""}`;
@@ -281,14 +301,18 @@ document.getElementById("openTabBtn").addEventListener("click", async () => {
 	});
 });
 
-document.getElementById("copyBtn").addEventListener("click", () => {
+document.getElementById("copyBtn").addEventListener("click", function () {
+	const btn = this;
+	const originalIcon = btn.innerHTML;
+
+	// কপি করার লজিক
 	let text = allLinksGlobal.map((l) => l.fullUrl).join("\n");
 	navigator.clipboard.writeText(text);
 
-	const originalText = document.getElementById("copyBtn").innerText;
-	document.getElementById("copyBtn").innerText = "Copied!";
-	setTimeout(
-		() => (document.getElementById("copyBtn").innerText = originalText),
-		1500,
-	);
+	// টিক মার্ক আইকন (Lucide Check Icon)
+	btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+	setTimeout(() => {
+		btn.innerHTML = originalIcon; // ১.৫ সেকেন্ড পর আগের আইকনে ফিরবে
+	}, 1500);
 });

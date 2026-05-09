@@ -7,53 +7,81 @@
     <title>Link Collector Pro</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
-<body class="bg-gray-50 p-5 transition-colors duration-300">
+<body class="p-5">
     <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
-        <h1 class="text-2xl font-black text-gray-900 dark:text-gray-100">Link Collector <span
-                class="text-blue-500 text-lg">PRO</span></h1>
-
-        <div class="flex items-center space-x-3">
-            <select id="themeSelect" class="text-sm border rounded px-2 py-1 bg-white dark:bg-gray-700">
+        <h1 class="text-2xl font-black main-title">Link Collector <span class="pro-badge text-lg">PRO</span></h1>
+        <div class="flex items-center space-x-2">
+            <select id="themeSelect" class="cyber-input text-xs font-bold py-1">
                 <option value="system">System</option>
                 <option value="light">Day</option>
                 <option value="dark">Night</option>
             </select>
-            <button id="copyBtn"
-                class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-3 rounded shadow">Copy
-                Links</button>
-            <button id="openTabBtn"
-                class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded shadow">Full
-                View</button>
+
+            <button id="copyBtn" class="cyber-btn btn-green" title="Copy All Links">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-clipboard">
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                </svg>
+            </button>
+
+            <button id="openTabBtn" class="cyber-btn btn-blue px-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-expand-icon lucide-expand">
+                    <path d="m15 15 6 6" data--h-bstatus="0OBSERVED" />
+                    <path d="m15 9 6-6" data--h-bstatus="0OBSERVED" />
+                    <path d="M21 16v5h-5" data--h-bstatus="0OBSERVED" />
+                    <path d="M21 8V3h-5" data--h-bstatus="0OBSERVED" />
+                    <path d="M3 16v5h5" data--h-bstatus="0OBSERVED" />
+                    <path d="m3 21 6-6" data--h-bstatus="0OBSERVED" />
+                    <path d="M3 8V3h5" data--h-bstatus="0OBSERVED" />
+                    <path d="M9 9 3 3" data--h-bstatus="0OBSERVED" />
+                </svg>
+            </button>
         </div>
     </div>
 
     <div id="tabBar"
-        class="flex space-x-6 border-b mb-6 text-sm font-medium text-gray-500 cursor-pointer overflow-x-auto whitespace-nowrap pb-1">
-        <div data-type="All" class="pb-2 tab-active">All Links</div>
-        <div data-type="Paths" class="pb-2">Paths</div>
-        <div data-type="JS Links" class="pb-2">JS Files</div>
-        <div data-type="JSON Files" class="pb-2">JSON</div>
-        <div data-type="Images" class="pb-2">Images</div>
-        <div data-type="Files" class="pb-2">Others</div>
+        class="flex text-xs font-bold mb-6 overflow-x-auto whitespace-nowrap border-b border-gray-200 dark:border-gray-700">
+        <div data-type="All" class="tab-item tab-active">All Links</div>
+        <div data-type="Paths" class="tab-item">Paths</div>
+        <div data-type="JS Links" class="tab-item">JS Files</div>
+        <div data-type="JSON Files" class="tab-item">JSON</div>
+        <div data-type="Images" class="tab-item">Images</div>
+        <div data-type="Files" class="tab-item">Others</div>
     </div>
 
     <div class="mb-4">
-        <input type="text" id="searchInput" placeholder="Search links..."
-            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <input type="text" id="searchInput" placeholder="Search links..." class="cyber-input">
+        <p id="searchResults" class="text-xs text-green-500 mt-2 hidden font-bold"></p>
     </div>
 
-    <div id="results" class="space-y-8">
+    <div id="results" class="space-y-4">
         <div class="flex justify-center py-10">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
     </div>
 
-    <div class="px-5 py-3 border-t border-gray-200 dark:border-gray-700 mt-6 text-center">
-        <p class="text-xs text-gray-500 dark:text-gray-400">
-            Made by <a href="https://github.com/ncodevsec" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline font-semibold">ncodevsec</a> | 
-            <a href="https://github.com/ncodevsec/link-collector-pro" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline">GitHub</a>
+    <div class="text-center" style="margin: 5rem auto;">
+        <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">
+            Development & Security
+        </p>
+        <p class="text-xs text-gray-500">
+            Handcrafted by
+            <a href="https://github.com/ncodevsec" target="_blank"
+                class="inline-flex items-center footer-link transition-all duration-300">
+                <span class="mr-1">ncodevsec</span>
+            </a>
+            <span class="mx-2 opacity-20">|</span>
+            <a href="https://github.com/ncodevsec/link-collector-pro" target="_blank"
+                class="hover:text-gray-300 transition-colors">
+                GitHub Repository
+            </a>
         </p>
     </div>
 

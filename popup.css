@@ -1,10 +1,45 @@
 :root {
+	/* Light Theme Colors */
+	--bg-main: #f8fafc;
+	--bg-card: #ffffff;
+	--bg-header: #f3f4f6;
+	--text-main: #1e293b;
+	--text-muted: #64748b;
+	--border-color: #e2e8f0;
+	--accent-blue: #3b82f6;
+	--accent-red: #ef4444;
 	--container-width: 650px;
+}
+
+/* OpenClaw Inspired Dark Palette */
+html.dark {
+	--bg-main: #0a0c10;
+	--bg-card: rgba(18, 21, 28, 0.8);
+	--bg-header: rgba(26, 31, 38, 0.8);
+	--text-main: #e2e8f0;
+	--text-muted: #94a3b8;
+	--border-color: #1f2937;
+	--accent-blue: #60a5fa;
+	--accent-red: #ff4d4d;
+}
+
+* {
+	font-family:
+		"Inter",
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		sans-serif;
 }
 
 body {
 	width: var(--container-width);
-	transition: background-color 0.3s;
+	margin: 0;
+	transition: all 0.3s ease;
+	background-color: var(--bg-main);
+	color: var(--text-main);
+	min-height: 100vh;
 }
 
 body.full-tab {
@@ -13,50 +48,88 @@ body.full-tab {
 	margin: 0 auto;
 }
 
+/* Night Mode Gradient */
 html.dark body {
-	background-color: #1a202c;
-	color: #e2e8f0;
+	background:
+		radial-gradient(
+			80% 50% at 20% 20%,
+			rgba(255, 77, 77, 0.12),
+			transparent 50%
+		),
+		radial-gradient(
+			60% 60% at 80% 30%,
+			rgba(0, 229, 204, 0.08),
+			transparent 50%
+		),
+		radial-gradient(
+			90% 70% at 50% 90%,
+			rgba(255, 77, 77, 0.06),
+			transparent 50%
+		);
+	background-color: var(--bg-main);
 }
 
-.dark .bg-white {
-	background-color: #2d3748;
-	border-color: #4a5568;
+/* --- Reusable Semantic Classes (No more long repetitive tailwind classes) --- */
+
+.cyber-card {
+	background-color: var(--bg-card);
+	backdrop-filter: blur(8px);
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 1.25rem;
+	margin-bottom: 1rem;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	transition: all 0.3s ease;
 }
 
-.dark .text-gray-900 {
-	color: #f7fafc;
+html.dark .cyber-card:hover {
+	box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
 }
 
-.dark .text-gray-700 {
-	color: #edf2f7;
+.domain-header-box {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+	background-color: var(--bg-header);
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	transition: all 0.3s ease;
 }
 
-.dark .bg-gray-100 {
-	background-color: #4a5568;
+.cyber-input {
+	width: 100%;
+	padding: 0.5rem 1.5rem 0.5rem 0.75rem; /* ডানপাশে একটু বেশি প্যাডিং (1.5rem) দেওয়া হয়েছে অ্যারো-র জন্য */
+	border: 1px solid var(--border-color);
+	border-radius: 0.5rem;
+	background-color: var(--bg-card);
+	color: var(--text-main);
+	outline: none;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	/* ডিফল্ট অ্যারো লুকানোর জন্য (অপশনাল, যদি কাস্টম অ্যারো দিতে চান) */
+	/* -webkit-appearance: none; 
+    appearance: none; */
+}
+select.cyber-input {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0.5rem center;
+	background-size: 1rem;
+	padding-right: 2rem; /* অ্যারো-র জন্য পর্যাপ্ত জায়গা */
+	appearance: none; /* ব্রাউজারের ডিফল্ট অ্যারো সরিয়ে আমাদের SVG অ্যারো বসালাম */
+}
+html.dark select.cyber-input {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
 }
 
-.dark #tabBar {
-	border-color: #4a5568;
-	color: #a0aec0;
+.cyber-input:focus {
+	border-color: var(--accent-blue);
+	box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.dark #tabBar .tab-active {
-	color: #60a5fa;
-	border-color: #60a5fa;
-}
-
-.dark #themeSelect {
-	color: white;
-	border-color: #4a5568;
-}
-
-.tab-active {
-	border-bottom: 3px solid #3b82f6;
-	color: #3b82f6;
-	font-weight: bold;
-}
-
-.link-text {
+.cyber-link {
+	color: var(--accent-blue);
+	text-decoration: none;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -64,15 +137,205 @@ html.dark body {
 	max-width: 90%;
 }
 
+.cyber-link:hover {
+	text-decoration: underline;
+}
+
+/* Tab Bar */
+#tabBar {
+	scrollbar-width: none;
+	gap: 24px;
+	border-bottom: 1px solid var(--border-color);
+}
+
 #tabBar::-webkit-scrollbar {
-	height: 4px;
+	display: none;
 }
 
-#tabBar::-webkit-scrollbar-thumb {
-	background: #cbd5e1;
-	border-radius: 4px;
+.tab-item {
+	padding-bottom: 0.5rem;
+	cursor: pointer;
+	color: var(--text-muted);
+	transition: all 0.3s ease;
 }
 
-.dark #tabBar::-webkit-scrollbar-thumb {
-	background: #475569;
+.tab-active {
+	border-bottom: 2px solid var(--accent-blue);
+	color: var(--accent-blue);
+}
+
+html.dark .tab-active {
+	text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+/* Typography & Badges */
+.main-title {
+	color: var(--text-main);
+}
+
+html.dark .main-title {
+	text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.pro-badge {
+	color: var(--accent-red);
+}
+
+html.dark .pro-badge {
+	text-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+}
+
+.bullet-point {
+	color: var(--accent-blue);
+}
+
+html.dark .bullet-point {
+	color: var(--accent-red);
+	text-shadow: 0 0 8px rgba(255, 77, 77, 0.4);
+}
+
+/* Buttons */
+.cyber-btn {
+	border: none;
+	border-radius: 8px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: white;
+	font-weight: bold;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.75rem;
+	cursor: pointer;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn-green {
+	background: linear-gradient(135deg, #059669, #10b981);
+}
+.btn-green:hover {
+	filter: brightness(1.1);
+}
+
+.btn-blue {
+	background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+.btn-blue:hover {
+	filter: brightness(1.1);
+}
+
+/* Custom Footer Links */
+.footer-link {
+	color: #8b5cf6;
+	font-weight: bold;
+}
+.footer-link:hover {
+	opacity: 0.8;
+}
+
+/* ট্যাবের ভেতরে সংখ্যার স্টাইল */
+.tab-count {
+	font-size: 0.7rem;
+	background: var(--border-color);
+	color: var(--text-muted);
+	padding: 1px 6px;
+	border-radius: 10px;
+	margin-left: 4px;
+	vertical-align: middle;
+	transition: all 0.3s ease;
+}
+
+.tab-active .tab-count {
+	background: var(--accent-blue);
+	color: white;
+}
+
+/* ডোমেইন হেডারের ডানপাশে ব্যাজ স্টাইল */
+.badge-count {
+	font-size: 0.65rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	background: rgba(59, 130, 246, 0.1);
+	color: var(--accent-blue);
+	padding: 2px 8px;
+	border-radius: 6px;
+	border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+html.dark .badge-count {
+	background: rgba(255, 77, 77, 0.1);
+	color: var(--accent-red);
+	border-color: rgba(255, 77, 77, 0.2);
+}
+
+/* ডোমেইন হেডার বক্সের ফ্লেক্স প্রপার্টি ঠিক করা */
+.domain-header-box {
+	display: flex;
+	align-items: center;
+	justify-content: space-between; /* এটি সংখ্যাকে ডানে ঠেলে দেবে */
+	margin-bottom: 1rem;
+	background-color: var(--bg-header);
+	padding: 0.6rem 0.8rem;
+	border-radius: 0.5rem;
+}
+
+/* ফন্ট রেন্ডারিং ক্লিন করার জন্য */
+.main-title,
+.cyber-input,
+.cyber-btn {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+/* ১. ফন্ট গ্লিচ ফিক্স */
+body, .main-title, .cyber-input, .cyber-btn {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* ২. থিম সিলেক্ট ড্রপডাউন অ্যারো ফিক্স */
+select.cyber-input {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-left: 10px;
+    padding-right: 28px; /* অ্যারোর জন্য স্পেস */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    cursor: pointer;
+    min-width: 90px;
+}
+
+html.dark select.cyber-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+}
+
+/* ৩. কপি বাটন আইকন প্রোপরশন ফিক্স */
+#copyBtn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px; /* আইকনটি বর্ডার থেকে নির্দিষ্ট দূরত্বে রাখবে */
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+#copyBtn svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: white;
+}
+
+/* ৪. ফুল ভিউ বাটন টেক্সট সেন্টার */
+#openTabBtn {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    white-space: nowrap;
 }
