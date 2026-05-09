@@ -2,7 +2,7 @@
 
 A powerful Chrome extension to extract, categorize, and search all links on any webpage.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Available-brightgreen)
 
