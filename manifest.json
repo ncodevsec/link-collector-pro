@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Link Collector Pro",
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"description": "Efficiently collect, categorize, and search all links on any webpage. Extract paths, files, images, and resources with powerful filtering capabilities.",
 	"permissions": ["activeTab", "scripting", "storage"],
 	"host_permissions": ["<all_urls>"],
