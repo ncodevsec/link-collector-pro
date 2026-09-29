@@ -6,6 +6,17 @@ A powerful Chrome extension to extract, categorize, and search all links on any 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Available-brightgreen)
 
+## 🚀 Upgraded Version
+
+Looking for more features? An upgraded version of this extension is now available:
+
+### 🛠️ Power Toys
+**Power Toys** is the newer and more advanced version of Link Collector Pro.
+
+👉 **[View Power Toys on GitHub](https://github.com/ncodevsec/power-toys.git)**
+
+---
+
 ## Features
 
 ✨ **Intelligent Link Extraction**
